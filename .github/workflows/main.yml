@@ -1,17 +1,27 @@
-name: Deploy to Azure WebApp
+name: Deploy to Azure WebApp (Client Secret)
 
 on:
   push:
     branches:
       - main
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      # Login using Client Secret JSON
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: WEBAPPCN
 
       - name: Zip Application
         run: zip -r package.zip .
@@ -20,5 +30,4 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: app-webappgit
-          publish-profile: APPWEBAPPGITCN
           package: package.zip

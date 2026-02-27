@@ -1,33 +1,26 @@
-# File: .github/workflows/workflow.yml
-
-name: Run Azure Login with OIDC
-on: [push]
+name: Deploy to Azure WebApp
+on: { push: { branches: [ "main" ] } }
 
 permissions:
   id-token: write
   contents: read
+
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Azure login
+      - uses: actions/checkout@v4
+
+      - name: Azure Login
         uses: azure/login@v2
         with:
           client-id: 62ef2481-1dff-4547-82dc-891322926266
           tenant-id: 7de0083d-d885-4555-97be-30b3d93e00ce
           subscription-id: 7bc1490e-697a-4a6c-9b49-dc658110a939
-          enable-AzPSSession: true
+          client-secret: ik58Q~jJ-tMqoqOKWVZyvzF3jtFuSi5BJ8VgKbZ5
 
-      - name: Azure CLI script
-        uses: azure/cli@v2
+      - name: Deploy to WebApp
+        uses: azure/webapps-deploy@v3
         with:
-          azcliversion: latest
-          inlineScript: |
-            az account show
-
-      - name: Azure PowerShell script
-        uses: azure/powershell@v2
-        with:
-          azPSVersion: "latest"
-          inlineScript: |
-            Get-AzContext
+          app-name: app-webappgit
+          package: .

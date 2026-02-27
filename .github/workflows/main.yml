@@ -1,33 +1,33 @@
-name: Deploy to Azure WebApp (Client Secret)
+# File: .github/workflows/workflow.yml
 
-on:
-  push:
-    branches:
-      - main
+name: Run Azure Login with OIDC
+on: [push]
 
 permissions:
   id-token: write
   contents: read
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      # Login using Client Secret JSON
-      - name: Azure Login
-        uses: azure/login@v1
+      - name: Azure login
+        uses: azure/login@v2
         with:
-          creds: APPWEBAPPGITCN
+          client-id: 62ef2481-1dff-4547-82dc-891322926266
+          tenant-id: 7de0083d-d885-4555-97be-30b3d93e00ce
+          subscription-id: 7bc1490e-697a-4a6c-9b49-dc658110a939
+          enable-AzPSSession: true
 
-      - name: Zip Application
-        run: zip -r package.zip .
-
-      - name: Deploy to Azure WebApp
-        uses: azure/webapps-deploy@v2
+      - name: Azure CLI script
+        uses: azure/cli@v2
         with:
-          app-name: app-webappgit
-          package: package.zip
+          azcliversion: latest
+          inlineScript: |
+            az account show
+
+      - name: Azure PowerShell script
+        uses: azure/powershell@v2
+        with:
+          azPSVersion: "latest"
+          inlineScript: |
+            Get-AzContext

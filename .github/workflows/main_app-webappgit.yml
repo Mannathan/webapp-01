@@ -19,12 +19,15 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore
+        working-directory: ./app-webappgit
         run: dotnet restore ./YourProjectFolder/YourProject.csproj
 
       - name: Build
+        working-directory: ./app-webappgit
         run: dotnet build ./YourProjectFolder/YourProject.csproj --configuration Release --no-restore
 
       - name: Publish
+        working-directory: ./app-webappgit
         run: dotnet publish ./YourProjectFolder/YourProject.csproj -c Release -o ./publish --no-build
 
       - name: Upload artifact
@@ -49,3 +52,4 @@ jobs:
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ECB52C23BEF04235A481C }}
+

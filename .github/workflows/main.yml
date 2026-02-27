@@ -1,4 +1,4 @@
-name: CI/CD to Azure WebApp
+name: Deploy to Azure WebApp
 
 on:
   push:
@@ -13,11 +13,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: APPWEBAPPGITCN
-
       - name: Zip Application
         run: zip -r package.zip .
 
@@ -25,4 +20,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: app-webappgit
+          publish-profile: APPWEBAPPGITCN
           package: package.zip

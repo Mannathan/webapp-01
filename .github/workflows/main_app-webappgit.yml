@@ -17,5 +17,5 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'app-webappgit'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ECB52C23BEF04235A481C883C60FDA97 }}
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ECB52C23BEF04235A481C }}

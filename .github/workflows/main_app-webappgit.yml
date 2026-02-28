@@ -1,21 +1,22 @@
-# .github/workflows/ci.yml
-name: CI - Build
+
+name: Deploy Static Website to Azure Web App
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      # If static site, no build needed
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
         with:
-          name: app-package
-          path: .
+          app-name: 'app-webappgit'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ECB52C23BEF04235A481C883C60FDA97 }}
+          package: .

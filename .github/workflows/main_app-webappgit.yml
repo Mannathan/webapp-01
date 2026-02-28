@@ -1,4 +1,4 @@
-name: Build and deploy ASP.Net Core app to Azure Web App - app-webappgit
+name: Deploy Static Website to Azure Web App
 
 on:
   push:
@@ -7,46 +7,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Restore
-        run: dotnet restore webapp-01.csproj
-
-      - name: Build
-        run: dotnet build webapp-01.csproj --configuration Release --no-restore
-
-      - name: Publish
-        run: dotnet publish webapp-01.csproj -c Release -o ./publish --no-build
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: .net-app
-          path: ./app-webappgit/publish
-
-  deploy:
-    runs-on: windows-latest
-    needs: build
-
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: .net-app
-
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'app-webappgit'
-          slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ECB52C23BEF04235A481C }}
-

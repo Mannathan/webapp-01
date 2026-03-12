@@ -18,6 +18,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'metechprodlisti-01'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ECB52C23BEF04235A481C883C60FDA97 }}
+          publish-profile: ${{ secrets.METECHPRODLISTI }}
           package: .
+
 
